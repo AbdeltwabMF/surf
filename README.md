@@ -6,6 +6,7 @@
 # Features & Patches
 
 - [homepage](https://surf.suckless.org/patches/homepage/): Allows you to set a homepage to be loaded when you have not set a `uri`.
+- [notifications](https://surf.suckless.org/patches/notifications/): Adds support for HTML5 Web Notifications.
 
 ## Requirements
 

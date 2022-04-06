@@ -63,6 +63,7 @@ typedef enum {
 	FileURLsCrossAccess,
 	FontSize,
 	FrameFlattening,
+	Notifications,
 	Geolocation,
 	HideBackground,
 	Inspector,
@@ -674,6 +675,8 @@ gettogglestats(Client *c)
 	togglestats[7] = curconfig[FrameFlattening].val.i ? 'F' : 'f';
 	togglestats[8] = curconfig[Certificate].val.i ?     'X' : 'x';
 	togglestats[9] = curconfig[StrictTLS].val.i ?       'T' : 't';
+	togglestats[10] = curconfig[Notifications].val.i ?  'L' : 'l';
+	togglestats[11] = '\0';
 }
 
 void
@@ -761,6 +764,9 @@ setparameter(Client *c, int refresh, ParamName p, const Arg *a)
 		webkit_settings_set_enable_caret_browsing(s, a->i);
 		refresh = 0;
 		break;
+	case Notifications:
+		refresh = 0;
+		return;
 	case Certificate:
 		if (a->i)
 			setcert(c, geturi(c));
@@ -1017,6 +1023,7 @@ newwindow(Client *c, const Arg *a, int noembed)
 	cmd[i++] = curconfig[RunInFullscreen].val.i ? "-F" : "-f" ;
 	cmd[i++] = curconfig[Geolocation].val.i ?     "-G" : "-g" ;
 	cmd[i++] = curconfig[LoadImages].val.i ?      "-I" : "-i" ;
+	cmd[i++] = curconfig[Notifications].val.i ?   "-L" : "-l" ;
 	cmd[i++] = curconfig[KioskMode].val.i ?       "-K" : "-k" ;
 	cmd[i++] = curconfig[Style].val.i ?           "-M" : "-m" ;
 	cmd[i++] = curconfig[Inspector].val.i ?       "-N" : "-n" ;
@@ -1593,6 +1600,8 @@ permissionrequested(WebKitWebView *v, WebKitPermissionRequest *r, Client *c)
 		else if (webkit_user_media_permission_is_for_video_device(
 		         WEBKIT_USER_MEDIA_PERMISSION_REQUEST(r)))
 			param = AccessWebcam;
+	} else if (WEBKIT_IS_NOTIFICATION_PERMISSION_REQUEST(r)) {
+		param = Notifications;
 	} else {
 		return FALSE;
 	}
@@ -2083,6 +2092,14 @@ main(int argc, char *argv[])
 	case 'S':
 		defconfig[JavaScript].val.i = 1;
 		defconfig[JavaScript].prio = 2;
+		break;
+	case 'l':
+		defconfig[Notifications].val.i = 0;
+		defconfig[Notifications].prio = 2;
+		break;
+	case 'L':
+		defconfig[Notifications].val.i = 1;
+		defconfig[Notifications].prio = 2;
 		break;
 	case 't':
 		defconfig[StrictTLS].val.i = 0;
