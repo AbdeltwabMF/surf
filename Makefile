@@ -10,22 +10,12 @@ OBJ = $(SRC:.c=.o)
 WOBJ = $(WSRC:.c=.o)
 WLIB = $(WSRC:.c=.so)
 
-all: options surf $(WLIB)
-
-options:
-	@echo surf build options:
-	@echo "CC            = $(CC)"
-	@echo "CFLAGS        = $(SURFCFLAGS) $(CFLAGS)"
-	@echo "WEBEXTCFLAGS  = $(WEBEXTCFLAGS) $(CFLAGS)"
-	@echo "LDFLAGS       = $(LDFLAGS)"
+all: surf $(WLIB)
 
 surf: $(OBJ)
 	$(CC) $(SURFLDFLAGS) $(LDFLAGS) -o $@ $(OBJ) $(LIBS)
 
 $(OBJ) $(WOBJ): config.h common.h config.mk
-
-config.h:
-	cp config.def.h $@
 
 $(OBJ): $(SRC)
 	$(CC) $(SURFCFLAGS) $(CFLAGS) -c $(SRC)
@@ -45,7 +35,7 @@ distclean: clean
 
 dist: distclean
 	mkdir -p surf-$(VERSION)
-	cp -R LICENSE Makefile config.mk config.def.h README \
+	cp -R LICENSE Makefile config.mk config.h README.md \
 	    surf-open.sh arg.h TODO.md surf.png \
 	    surf.1 common.h $(SRC) $(WSRC) surf-$(VERSION)
 	tar -cf surf-$(VERSION).tar surf-$(VERSION)
@@ -73,4 +63,4 @@ uninstall:
 	done
 	- rmdir $(DESTDIR)$(LIBDIR)
 
-.PHONY: all options distclean clean dist install uninstall
+.PHONY: all distclean clean dist install uninstall

@@ -1,13 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 #
-# See the LICENSE file for copyright and license details. 
+# See the LICENSE file for copyright and license details.
 #
 
-xidfile="$HOME/tmp/tabbed-surf.xid"
+xidfile="/tmp/tabbed-surf.xid"
 uri=""
 
-if [ "$#" -gt 0 ];
-then
+if [[ "$#" -gt 0 ]]; then
 	uri="$1"
 fi
 
@@ -16,8 +15,7 @@ runtabbed() {
 		2>/dev/null &
 }
 
-if [ ! -r "$xidfile" ];
-then
+if [[ ! -r "$xidfile" ]]; then
 	runtabbed
 else
 	xid=$(cat "$xidfile")
@@ -29,4 +27,3 @@ else
 		surf -e "$xid" "$uri" >/dev/null 2>&1 &
 	fi
 fi
-
