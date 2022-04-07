@@ -110,7 +110,8 @@ static WebKitFindOptions findopts = WEBKIT_FIND_OPTIONS_CASE_INSENSITIVE |
  */
 static SiteSpecific styles[] = {
 	/* regexp               file in $styledir */
-	{ ".*",                 "default.css" },
+	{ "https://search.brave.com.*", "brave.css" },
+	{ ".*", "default.css" },
 };
 
 /* certificates */
